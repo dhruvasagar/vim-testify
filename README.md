@@ -1,6 +1,46 @@
-# VIM Testify v0.0.1
+# VIM Testify v0.0.2
 
 A very basic unit testing framework for viml
+
+## Using Testify
+
+Testify leverages vimscript exception handling to define assertions which will
+capture error information and enable unit testing within vim's environment,
+where your plugin is expected to work.
+
+Writing tests couldn't be simpler, because you do so, in plain vimscript
+without any syntactic sugar coating.
+
+eg.)
+
+```vim
+function! s:TestFunction()
+  call testify#assert#equals(1, 1)
+  call testify#assert#not_equals(1, 2)
+endfunction
+call testify#it('Test should pass', function('s:TestFunction')
+```
+
+You can place that code in a vim file anywhere, however I encourage and
+support placing them in a subdirectory 't' under your plugin directory. (This
+will be configurable in the future.).
+
+You can invoke `:TestifyFile` on that file to execute the tests and it will
+output the results of the tests, which will look something like this :
+
+```
+√ Test should pass
+```
+
+You can also invoke `:TestifyLast` to execute the most recent executed test,
+or `:TestifySuite` to execute all test files recursively within the `t`
+subdirectory under the current working directory.
+
+Currently there are 2 testing output methods supported, one is `echo` and the
+other `buffer`. You can configure it by setting option
+`g:testify#logger#output` to `echo` or `buffer`. Echo would simply
+echo the output of all tests on the standard vim command line, however buffer
+will do so in a temporary file shown in a preview window.
 
 ## Installation
 
