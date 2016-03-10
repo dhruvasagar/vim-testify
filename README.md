@@ -11,26 +11,43 @@ where your plugin is expected to work.
 Writing tests couldn't be simpler, because you do so, in plain vimscript
 without any syntactic sugar coating.
 
-eg.)
+Here are a few examples :
 
-```vim
-function! s:TestFunction()
-  call testify#assert#equals(1, 1)
-  call testify#assert#not_equals(1, 2)
-endfunction
-call testify#it('Test should pass', function('s:TestFunction'))
-```
+1. Successful Test
 
-You can place that code in a vim file anywhere, however I encourage and
-support placing them in a subdirectory 't' under your plugin directory. (This
-will be configurable in the future.).
+    ```vim
+    function! s:TestFunction()
+      call testify#assert#equals(1, 1)
+      call testify#assert#not_equals(1, 2)
+    endfunction
+    call testify#it('Test should pass', function('s:TestFunction'))
+    ```
 
-You can invoke `:TestifyFile` on that file to execute the tests and it will
-output the results of the tests, which will look something like this :
+    You can place that code in a vim file anywhere, however I encourage and
+    support placing them in a subdirectory 't' under your plugin directory. (This
+    will be configurable in the future.).
 
-```
-√ Test should pass
-```
+    You can invoke `:TestifyFile` on that file to execute the tests and it will
+    output the results of the tests, which will look something like this :
+
+    ```
+    √ Test should pass
+    ```
+2. Failed Test
+
+    ```vim
+    function! s:TestFunction()
+      call testify#assert#equals(1, 2)
+    endfunction
+    call testify#it('Test should fail', function('s:TestFunction'))
+    ```
+
+    The output for that would look like :
+
+    ```
+    ✗ Test should fail
+        Expected 1 to equal 2
+    ```
 
 You can also invoke `:TestifyLast` to execute the most recent executed test,
 or `:TestifySuite` to execute all test files recursively within the `t`
