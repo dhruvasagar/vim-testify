@@ -5,8 +5,10 @@ let g:loaded_testify = 1
 
 function! s:Testify(cmd)
   if !empty(a:cmd)
+    call testify#logger#clear()
     execute a:cmd
     let s:last_cmd = a:cmd
+    call testify#logger#show()
   else
     echo "Command cannot be empty"
   endif
