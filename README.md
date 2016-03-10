@@ -18,7 +18,7 @@ function! s:TestFunction()
   call testify#assert#equals(1, 1)
   call testify#assert#not_equals(1, 2)
 endfunction
-call testify#it('Test should pass', function('s:TestFunction')
+call testify#it('Test should pass', function('s:TestFunction'))
 ```
 
 You can place that code in a vim file anywhere, however I encourage and
