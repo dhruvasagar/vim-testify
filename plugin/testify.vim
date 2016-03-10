@@ -12,6 +12,6 @@ function! s:Testify(cmd)
   endif
 endfunction
 
-command! TestifyFile call s:Testify("source %")
+command! TestifyFile call s:Testify('source ' . expand('%'))
 command! TestifyLast call s:Testify(s:last_cmd)
 command! TestifySuite call s:Testify("for file in glob('t/**/*.vim',0,1) | exec 'source' file | endfor")
