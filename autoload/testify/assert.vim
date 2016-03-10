@@ -1,8 +1,3 @@
-if exists('g:autoloaded_assert')
-  finish
-endif
-let g:autoloaded_assert = 1
-
 function! s:assert(cond, ...) abort
   let fail_msg = a:0 ? a:1 : 'Failed'
   if !a:cond

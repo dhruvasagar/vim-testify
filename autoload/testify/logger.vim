@@ -1,8 +1,3 @@
-if exists('g:autoloaded_logger')
-  finish
-endif
-let g:autoloaded_logger = 1
-
 let g:testify#logger#output = 'buffer'
 
 function! s:LogToBuffer(msg)

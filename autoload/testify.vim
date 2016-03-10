@@ -1,8 +1,3 @@
-if exists('g:autoloaded_testify')
-  finish
-endif
-let g:autoloaded_testify = 1
-
 function! testify#it(msg, func)
   try
     let result = a:func()
