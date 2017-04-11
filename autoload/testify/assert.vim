@@ -6,7 +6,7 @@ function! s:assert(cond, ...) abort
 endfunction
 
 function! testify#assert#assert(cond)
-  call s:assert(cond)
+  call s:assert(a:cond)
 endfunction
 
 function! testify#assert#equals(actual, expected)
@@ -30,12 +30,12 @@ function! testify#assert#not_matches(actual, regexp)
 endfunction
 
 function! testify#assert#empty(actual)
-  let cond = empty(actual)
+  let cond = empty(a:actual)
   call s:assert(cond, 'Expected ' . a:actual . ' to be empty')
 endfunction
 
 function! testify#assert#not_empty(actual)
-  let cond = !empty(actual)
+  let cond = !empty(a:actual)
   call s:assert(cond, 'Expected ' . a:actual . ' to not be empty')
 endfunction
 
