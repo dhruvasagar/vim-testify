@@ -45,6 +45,14 @@ function! testify#logger#fail(msg)
   call s:log('fail', a:msg)
 endfunction
 
+function! testify#logger#throwpoint(prefix)
+  let tp = v:throwpoint
+  let stack = split(tp, '\.\.')
+  let stack_with_lines = map(stack, {_, s -> substitute(s, '\[\(\d\+\)\]', ' line \1', 'g')})
+  let msg = map(stack_with_lines[1:-3], {_, s -> a:prefix . s})
+  call s:log('fail', msg)
+endfunction
+
 function! testify#logger#show()
   if g:testify#logger#output ==# 'buffer'
     call s:ClearBuffer()

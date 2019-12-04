@@ -5,5 +5,6 @@ function! testify#it(msg, func)
   catch
     call testify#logger#fail('✗ ' . a:msg)
     call testify#logger#fail("\t" . v:exception)
+    call testify#logger#throwpoint("\t\t")
   endtry
 endfunction

@@ -1,4 +1,4 @@
-# VIM Testify v0.0.2
+# VIM Testify v0.1.0
 
 A very basic unit testing framework for viml
 
@@ -47,6 +47,7 @@ Here are a few examples :
     ```
     ✗ Test should fail
         Expected 1 to equal 2
+          <SNR>228_TestFunction line 1
     ```
 
 You can also invoke `:TestifyLast` to execute the most recent executed test,
