@@ -1,4 +1,4 @@
-# VIM Testify v0.1.0
+# VIM Testify v0.2.0
 
 A very basic unit testing framework for viml
 
@@ -54,17 +54,25 @@ You can also invoke `:TestifyLast` to execute the most recent executed test,
 or `:TestifySuite` to execute all test files recursively within the `t`
 subdirectory under the current working directory.
 
-Currently there are 2 testing output methods supported, one is `echo` and the
-other `buffer`. You can configure it by setting option
-`g:testify#logger#output` to `echo` or `buffer`. Echo would simply
-echo the output of all tests on the standard vim command line, however buffer
-will do so in a temporary file shown in a preview window.
+Currently there are 3 testing logging methods supported, this can be
+controlled by setting option `g:testify#logger#type`.
+
+* `echo` : Uses vim's echo and outputs the tests log on the standard vim
+           command line
+* `shell`: Uses `!echo` to output the logs to the shell, this is utilized when
+           tests are invoked during vim startup using `vim +TestifySuite` and
+           is useful for working with a continuous integration setup.
+
+           NOTE: When this is invoked during vim startup, testify exits vim
+           after running the tests with an appropriate exit code based on
+           whether the tests passed or not.
+* `buffer`: Uses a preview buffer to show the test logs
 
 ## Installation
 
-1. For installation with vundle / vim-plug / neobundle add the repository
-   `dhruvasagar/vim-testify` to your ~/.vimrc with the appropriate plugin
-   command.
+1. For installation with a popular plugin manager such as vundle, vim-plug,
+   neobundle, etc. add the repository `dhruvasagar/vim-testify` to your
+   ~/.vimrc with the appropriate plugin command.
 2. For pathogen, just clone / submodule this repository within your bundle
    directory.
 3. For manual installation (highly discouraged), copy all files into your

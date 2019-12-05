@@ -3,11 +3,11 @@ if exists('b:current_syntax')
 endif
 let b:current_syntax = 'testify'
 
-syn region TestifyHeader  start=/^\s*-/ end=/.*:$/
-hi def link TestifyHeader Normal
+syn region TestifyInfo start=/^\s*\*.*/ end=/^\ze\s*[√✗\*].*/
+hi def link TestifyInfo Normal
 
-syn region TestifySuccess start=/^\s*√.*/ end=/^\ze\s*[√✗-].*/
+syn region TestifySuccess start=/^\s*√.*/ end=/^\ze\s*[√✗\*].*/
 hi def link TestifySuccess Special
 
-syn region TestifyFailure start=/^\s*✗.*/ end=/^\ze\s*[√✗-].*/
+syn region TestifyFailure start=/^\s*✗.*/ end=/^\ze\s*[√✗\*].*/
 hi def link TestifyFailure Error

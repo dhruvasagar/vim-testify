@@ -1,42 +1,17 @@
-let g:testify#logger#output = 'buffer'
+let g:testify#logger#type = 'buffer'
 
 let s:logs = []
 
-function! s:LogToEcho(log)
-  if a:log.type ==# 'success'
-    silent! exec '!echo' a:log.msg
-  elseif a:log.type ==# 'fail'
-    silent! exec '!echo' a:log.msg
-  elseif a:log.type ==# 'info'
-    silent! exec '!echo' a:log.msg
-  endif
-endfunction
-
-let s:buffer_name = 'testify_output'
-function! s:ClearBuffer()
-  let bufnr = bufnr(s:buffer_name, 1)
-  exec 'sbuffer' bufnr
-  :%delete
-  quit
-endfunction
-
-function! s:LogToBuffer(log)
-  let switchbufold = &switchbuf
-  let bufnr = bufnr(s:buffer_name, 1)
-  set switchbuf=useopen
-  exec 'sbuffer' bufnr
-  setf testify
-  setl previewwindow
-  setl winheight=40 winfixheight
-  setl buftype=nofile bufhidden=wipe nobuflisted
-  call append(line('$')-1, a:log.msg)
-  normal! gg
-  wincmd p
-  exec 'set switchbuf=' switchbufold
-endfunction
-
-function! s:log(type, msg)
+function! s:log(type, msg) abort
   call add(s:logs, {'type': a:type, 'msg': a:msg})
+endfunction
+
+function! s:get_clear_fn() abort
+  return function('testify#logger#'.g:testify#logger#type.'#clear')
+endfunction
+
+function! s:get_log_fn() abort
+  return function('testify#logger#'.g:testify#logger#type.'#log')
 endfunction
 
 function! testify#logger#info(msg)
@@ -55,25 +30,21 @@ function! testify#logger#throwpoint(prefix)
   let tp = v:throwpoint
   let stack = split(tp, '\.\.')
   let stack_with_lines = map(stack, {_, s -> substitute(s, '\[\(\d\+\)\]', ' line \1', 'g')})
-  let msg = map(stack_with_lines[1:-3], {_, s -> a:prefix . s})
+  let msg = map(stack_with_lines[6:-3], {_, s -> a:prefix . s})
   call s:log('fail', msg)
 endfunction
 
 function! testify#logger#show()
   if has('vim_starting')
-    let g:testify#logger#output = 'echo'
+    let g:testify#logger#type = 'shell'
   endif
 
-  if g:testify#logger#output ==# 'buffer'
-    call s:ClearBuffer()
-  endif
+  let CleanFn = s:get_clear_fn()
+  call CleanFn()
 
   for log in s:logs
-    if g:testify#logger#output ==# 'echo'
-      call s:LogToEcho(log)
-    elseif g:testify#logger#output ==# 'buffer'
-      call s:LogToBuffer(log)
-    endif
+    let LogFn = s:get_log_fn()
+    call LogFn(log)
   endfor
 endfunction
 
