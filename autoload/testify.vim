@@ -1,3 +1,7 @@
+function! testify#describe(context)
+  call testify#logger#info('- ' . a:context.':')
+endfunction
+
 function! testify#it(msg, func)
   try
     let result = a:func()

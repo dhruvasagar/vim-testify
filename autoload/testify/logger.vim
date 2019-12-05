@@ -7,6 +7,8 @@ function! s:LogToEcho(log)
     echohl Special | echo a:msg | echohl None
   elseif log.type ==# 'fail'
     echohl Error | echo a:msg | echohl None
+  elseif log.type ==# 'info'
+    echohl Normal | echo a:msg | echohl None
   endif
 endfunction
 
@@ -14,7 +16,7 @@ let s:buffer_name = 'testify_output'
 function! s:ClearBuffer()
   let bufnr = bufnr(s:buffer_name, 1)
   exec 'sbuffer' bufnr
-  normal! ggdG
+  :%delete
   quit
 endfunction
 
@@ -35,6 +37,10 @@ endfunction
 
 function! s:log(type, msg)
   call add(s:logs, {'type': a:type, 'msg': a:msg})
+endfunction
+
+function! testify#logger#info(msg)
+  call s:log('info', a:msg)
 endfunction
 
 function! testify#logger#success(msg)
