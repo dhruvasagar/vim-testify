@@ -3,12 +3,12 @@ let g:testify#logger#output = 'buffer'
 let s:logs = []
 
 function! s:LogToEcho(log)
-  if log.type ==# 'success'
-    echohl Special | echo a:msg | echohl None
-  elseif log.type ==# 'fail'
-    echohl Error | echo a:msg | echohl None
-  elseif log.type ==# 'info'
-    echohl Normal | echo a:msg | echohl None
+  if a:log.type ==# 'success'
+    silent! exec '!echo' a:log.msg
+  elseif a:log.type ==# 'fail'
+    silent! exec '!echo' a:log.msg
+  elseif a:log.type ==# 'info'
+    silent! exec '!echo' a:log.msg
   endif
 endfunction
 
@@ -60,6 +60,10 @@ function! testify#logger#throwpoint(prefix)
 endfunction
 
 function! testify#logger#show()
+  if has('vim_starting')
+    let g:testify#logger#output = 'echo'
+  endif
+
   if g:testify#logger#output ==# 'buffer'
     call s:ClearBuffer()
   endif
