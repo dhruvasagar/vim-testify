@@ -30,7 +30,10 @@ function! testify#logger#throwpoint(prefix)
   let tp = v:throwpoint
   let stack = split(tp, '\.\.')
   let stack_with_lines = map(stack, {_, s -> substitute(s, '\[\(\d\+\)\]', ' line \1', 'g')})
-  let msg = map(stack_with_lines[6:-3], {_, s -> a:prefix . s})
+  if !exists('g:testify#logger#debug')
+    let stack_with_lines = stack_with_lines[6:-3]
+  endif
+  let msg = map(stack_with_lines, {_, s -> a:prefix . s})
   call s:log('fail', msg)
 endfunction
 
