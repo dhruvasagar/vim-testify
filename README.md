@@ -1,4 +1,4 @@
-# VIM Testify v0.2.0
+# VIM Testify v0.2.0 [![CircleCI](https://circleci.com/gh/dhruvasagar/vim-testify.svg?style=svg)](https://circleci.com/gh/dhruvasagar/vim-testify)
 
 A very basic unit testing framework for viml
 
