@@ -87,3 +87,45 @@ function! s:TestifyNotEmptyFailure() abort
 endfunction
 call testify#it('assert not_empty should raise exception when argument is empty',
       \ function('s:TestifyNotEmptyFailure'))
+
+function! s:TestifyRaiseExceptionSuccess() abort
+  call testify#assert#not_raise_exception(
+        \ function('testify#assert#raise_exception', [
+        \   function('testify#assert#equals', [1, 2]),
+        \   'Expected "1" to equal "2"'
+        \ ])
+        \)
+endfunction
+call testify#it('assert raise_exception should be successful when exception is raised',
+      \ function('s:TestifyRaiseExceptionSuccess'))
+
+function! s:TestifyRaiseExceptionFailure() abort
+  call testify#assert#raise_exception(
+        \ function('testify#assert#raise_exception', [
+        \   function('testify#assert#equals', [1, 1]),
+        \   'Expected "1" to equal "2"'
+        \ ]),
+        \ 'Expected function to raise exception "Expected "1" to equal "2"", but none was raised'
+        \)
+endfunction
+call testify#it('assert raise_exception should raise an exception when the expected exception was not raised', function('s:TestifyRaiseExceptionFailure'))
+
+function! s:TestifyNotRaiseExceptionSuccess() abort
+  call testify#assert#not_raise_exception(
+        \ function('testify#assert#not_raise_exception', [
+        \   function('testify#assert#equals', [1, 1]),
+        \ ])
+        \)
+endfunction
+call testify#it('assert not_raise_exception should be successful when exception is not raised',
+      \ function('s:TestifyNotRaiseExceptionSuccess'))
+
+function! s:TestifyNotRaiseExceptionFailure() abort
+  call testify#assert#raise_exception(
+        \ function('testify#assert#not_raise_exception', [
+        \   function('testify#assert#equals', [1, 2]),
+        \ ]),
+        \ 'Expected function to not raise exception but got "Expected "1" to equal "2""'
+        \)
+endfunction
+call testify#it('assert not_raise_exception should raise an exception when an unexpected exception was raised', function('s:TestifyNotRaiseExceptionFailure'))
