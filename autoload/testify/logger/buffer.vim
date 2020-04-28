@@ -13,7 +13,7 @@ function! testify#logger#buffer#log(log)
   exec 'sbuffer' bufnr
   setf testify
   setl previewwindow
-  setl winheight=40 winfixheight
+  setl previewheight=40 winfixheight
   setl buftype=nofile bufhidden=wipe nobuflisted
   call append(line('$')-1, a:log.msg)
   normal! gg

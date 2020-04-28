@@ -1,0 +1,182 @@
+*testify.txt* *testify*       Unit Testing for Vim Script
+==============================================================================
+              Testify, a pure vim script unit testing framework.
+                                Version 0.2.1
+
+                Author: Dhruva Sagar (https://dhruvasagar.com)
+              LICENSE: MIT (http://opensource.org/licenses/mit)
+
+==============================================================================
+CONTENTS                                                    *testify-contents*
+
+    1. Introduction ............................ |testify-introduction|
+    2. Getting Started ......................... |testify-getting-started|
+    3. Assertions .............................. |testify-assertions|
+    4. Options ................................. |testify-options|
+    5. Commands ................................ |testify-commands|
+    6. Contributing ............................ |testify-contributing|
+    7. Report Issues ........................... |testify-report-issues|
+
+==============================================================================
+INTRODUCTION                                            *testify-introduction*
+
+    Testify is a unit testing framework built using pure vim script for
+    writing unit tests for vim script in pure vim script.
+
+    It provides several commonly used assertions which leverage vim
+    exception handling and allow execution of tests within vim itself,
+    where your plugin is expected to work. This has an added advantage of
+    being able to catch plugin conflicts easily.
+
+==============================================================================
+GETTING STARTED                                      *testify-getting-started*
+
+    Writing tests with |testify| is done using pure vim script.
+
+    For convenience |testify| provides |TestifyNearest|, |TestifyFile|,
+    |TestifySuite| and |TestifyLast| commands to execute tests.
+
+    You can place tests within your source files anywhere, however it is
+    recommended that you place them in separate test files within
+    a subdirectory named `t` under your plugin directory.
+
+    A test looks like this : >
+
+        function! s:TestFunction()
+          call testify#assert#equals(1, 1)
+        endfunction
+        call testify#it('Test should pass', function('s:TestFunction'))
+<
+    When you execute the above test you should see the following output: >
+
+        √ Test should pass
+        * Test Summary
+        * ------------
+        * All tests successful
+        * Tests=1
+        * Result: PASS
+<
+    Lets look at an example of a failing test : >
+
+        function! s:TestFunction()
+          call testify#assert#equals(1, 2)
+        endfunction
+        call testify#it('Test should fail', function('s:TestFunction'))
+<
+    The output for the above failed test looks like this : >
+
+        ✗ Test should fail
+            Expected "1" to equal "2"
+              <SNR>228_TestFunction:1
+        * Test Summary
+        * ------------
+        * Tests=1
+        * Fails=1
+        * Result: FAIL
+<
+==============================================================================
+ASSERTIONS                                                *testify-assertions*
+
+    Testify provides common assertions you might be familiar with from using
+    other unit testing frameworks. The following is the list of all provided
+    assertion apis :
+
+                                                       *testify#assert#assert*
+testify#assert#assert(condition)
+    Generic assert api to which you can supply a condition which should
+    evaluate to either `true` or `false`.
+
+                                                       *testify#assert#equals*
+testify#assert#equals(actual, expected)
+    Asserts equality of actual with expected values.
+
+                                                   *testify#assert#not_equals*
+testify#assert#not_equals(actual, expected)
+    Asserts for inequality of actual with expected values.
+
+                                                      *testify#assert#matches*
+testify#assert#matches(value, regexp)
+    Asserts if a value matches the given regular expression.
+
+                                                  *testify#assert#not_matches*
+tesify#assert#not_matches(value, regexp)
+    Asserts if a value does not match the given regular expression.
+
+                                                        *testify#assert#empty*
+testify#assert#empty(value)
+    Asserts if a value is empty, piggy backs on the native |empty()|
+
+                                                    *testify#assert#not_empty*
+testify#assert#not_empty(value)
+    Asserts if a value is not empty
+
+                                              *testify#assert#raise_exception*
+testify#assert#raise_exception(funcref, exception)
+    Asserts that calling the given function raises an exception matching the
+    given exception
+
+                                          *testify#assert#not_raise_exception*
+testify#assert#not_raise_exception(funcref)
+    Asserts that calling the given function does not raise any exception.
+
+==============================================================================
+OPTIONS                                                      *testify-options*
+
+                                                         *testify#logger#type*
+testify#logger#type
+    Testify supports 3 logging methods :
+
+    * `echo  ` : Uses vim's echo and outputs the tests execution logs on the
+               standard vim command line
+    * `shell`  : Uses `!echo` to output the test execution logs to the shell,
+               this is set as the default when tests are invoked during vim
+               startup using something like `vim +TestifySuite` and is useful
+               for integration with a continous integration platform.
+
+               NOTE: For compatibility with continous integration platforms,
+               when executed during vim startup as described above, |testify|
+               exits vim after running the tests with an appropriate exit code
+               based on whether the tests passed or not.
+    * `buffer` : Uses a preview buffer to show the test logs. This is the
+               default.
+
+==============================================================================
+COMMANDS                                                    *testify-commands*
+
+                                                             *:TestifyNearest*
+:TestifyNearest
+    This allows you to be able to run and focus on an individual test. This
+    works by searching for the next occurrence of `testify#it` and executes
+    just that test.
+
+    NOTE: This also repositions the cursor on the line where we found the next
+    occurrence of `testify#it` for convenience.
+
+                                                                *:TestifyFile*
+:TestifyFile
+    This executes all tests within the current vim script file.
+
+                                                               *:TestifySuite*
+:TestifySuite
+    This executes all tests within all test files recursively within the
+    subdirectory named `t` within the current working directory.
+
+                                                                *:TestifyLast*
+:TestifyLast
+    This executes the most recently executed test command.
+
+==============================================================================
+CONTRIBUTING                                            *testify-contributing*
+
+    * Fork it
+    * Commit your changes and give your commit message some love
+    * Push to your fork on github
+    * Open a Pull Request
+
+==============================================================================
+REPORT ISSUES                                          *testify-report-issues*
+
+    If you face any issues, please report them at
+    https://github.com/dhruvasagar/vim-testify/issues
+
+          vim:tw=78:ts=8:ft=help:norl:et

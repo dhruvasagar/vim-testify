@@ -6,7 +6,7 @@ let g:loaded_testify = 1
 function! s:Testify(cmd) abort
   let g:testify_fail = 0
   call testify#clear()
-  execute a:cmd
+  exec a:cmd
   let s:last_cmd = a:cmd
   call testify#run_all()
 
@@ -28,8 +28,7 @@ function! s:TestifyNearest() abort
 
   let g:testify_fail = 0
   call testify#clear()
-  let cmd = 'source ' . expand('%')
-  execute cmd
+  exec 'source' expand('%')
   call testify#run(index - 1)
 endfunction
 

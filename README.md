@@ -1,20 +1,19 @@
-# VIM Testify v0.2.0 [![CircleCI](https://circleci.com/gh/dhruvasagar/vim-testify.svg?style=svg)](https://circleci.com/gh/dhruvasagar/vim-testify)
+# VIM Testify v0.2.1 [![CircleCI](https://circleci.com/gh/dhruvasagar/vim-testify.svg?style=svg)](https://circleci.com/gh/dhruvasagar/vim-testify)
 
 A very basic unit testing framework for viml
 
 ## Using Testify
 
-Testify leverages vimscript exception handling to define assertions which will
-capture error information and enable unit testing within vim's environment,
-where your plugin is expected to work.
+`Testify` leverages vim script exception handling to define assertions which
+will capture error information and enable unit testing within vim's
+environment, where your plugin is expected to work.
 
 Writing tests couldn't be simpler, because you do so, in plain vimscript
 without any syntactic sugar coating.
 
-Here are a few examples :
+Here is what it looks like :
 
-1. Successful Test
-
+* Successful Test
     ```vim
     function! s:TestFunction()
       call testify#assert#equals(1, 1)
@@ -24,17 +23,20 @@ Here are a few examples :
     ```
 
     You can place that code in a vim file anywhere, however I encourage and
-    support placing them in a subdirectory 't' under your plugin directory. (This
-    will be configurable in the future.).
+    support placing them in a subdirectory 't' under your plugin directory.
+    This will be configurable in the future.
 
     You can invoke `:TestifyFile` on that file to execute the tests and it will
     output the results of the tests, which will look something like this :
-
-    ```
+    ```testify
     √ Test should pass
+    * Test Summary
+    * ------------
+    * All tests successful
+    * Tests=1
+    * Result: PASS
     ```
-2. Failed Test
-
+* Failed Test
     ```vim
     function! s:TestFunction()
       call testify#assert#equals(1, 2)
@@ -43,30 +45,45 @@ Here are a few examples :
     ```
 
     The output for that would look like :
-
-    ```
+    ```testify
     ✗ Test should fail
-        Expected 1 to equal 2
+        Expected "1" to equal "2"
           <SNR>228_TestFunction line 1
+    * Test Summary
+    * ------------
+    * Tests=1
+    * Fails=1
+    * Result: FAIL
     ```
 
-You can also invoke `:TestifyLast` to execute the most recent executed test,
-or `:TestifySuite` to execute all test files recursively within the `t`
-subdirectory under the current working directory.
+You can use the following commands :
+* `:TestifyNearest` : This allows you to be able to run and focus on an
+                      individual test. This works by searching for the next
+                      occurrence of `testify#it` and call only that test.
+                      NOTE: This will also reposition the cursor to the line
+                      containing the next occurrence of `testify#it`.
+* `:TestifySuite`   : This allows you to execute all test files recursively
+                      within the `t` subdirectory under the current working
+                      directory effectively executing all test cases.
+* `:TestifyLast`    : This can be used to execute the most recently executed
+                      test, be it `:TestifyNearest`, `:TestifyFile` or
+                      `:TestifySuite`.
 
-Currently there are 3 testing logging methods supported, this can be
-controlled by setting option `g:testify#logger#type`.
+Currently there are 3 test logging methods supported, this can be controlled
+by setting option `g:testify#logger#type`.
 
-* `echo` : Uses vim's echo and outputs the tests log on the standard vim
-           command line
-* `shell`: Uses `!echo` to output the logs to the shell, this is utilized when
-           tests are invoked during vim startup using `vim +TestifySuite` and
-           is useful for working with a continuous integration setup.
+* `echo`  : Uses vim's echo and outputs the tests log on the standard vim
+            command line.
+* `shell` : Uses `!echo` to output the logs to the shell, this is default
+            when invoked during vim startup using `vim +TestifySuite` and
+            is useful for working with a continuous integration setup.
 
-           NOTE: When this is invoked during vim startup, testify exits vim
-           after running the tests with an appropriate exit code based on
-           whether the tests passed or not.
-* `buffer`: Uses a preview buffer to show the test logs
+            NOTE: When this is invoked during vim startup, testify exits vim
+            after running the tests with an appropriate exit code based on
+            whether the tests passed or not. This is used by continous
+            integration applications to judge whether or not the tests ran
+            successfully or not.
+* `buffer`: Uses a preview buffer to show the test logs.
 
 ## Installation
 
