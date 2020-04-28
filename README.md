@@ -81,9 +81,10 @@ by setting option `g:testify#logger#type`.
             NOTE: When this is invoked during vim startup, testify exits vim
             after running the tests with an appropriate exit code based on
             whether the tests passed or not. This is used by continous
-            integration applications to judge whether or not the tests ran
-            successfully or not.
-* `buffer`: Uses a preview buffer to show the test logs.
+            integration applications to judge whether or not the tests were
+            successful.
+* `buffer`: Uses a preview buffer to show the test logs. This is the default
+            when using Testify from within VIM.
 
 ## Installation
 
