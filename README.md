@@ -48,7 +48,7 @@ Here is what it looks like :
     ```testify
     ✗ Test should fail
         Expected "1" to equal "2"
-          <SNR>228_TestFunction line 1
+          <SNR>228_TestFunction:1
     * Test Summary
     * ------------
     * Tests=1
