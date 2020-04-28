@@ -29,9 +29,15 @@ endfunction
 function! testify#logger#throwpoint(prefix)
   let tp = v:throwpoint
   let stack = split(tp, '\.\.')
-  let stack_with_lines = map(stack, {_, s -> substitute(s, '\[\(\d\+\)\]', ' line \1', 'g')})
+  let stack_with_lines = map(stack, {_, s -> substitute(s, '\[\(\d\+\)\]', ':\1', 'g')})
   if !exists('g:testify#logger#debug')
-    let stack_with_lines = stack_with_lines[6:-3]
+    let index = -1
+    while index < len(stack_with_lines)
+      let index += 1
+      if stack_with_lines[index] =~# '_run_test:2' | break | endif
+    endwhile
+    let index += 1
+    let stack_with_lines = stack_with_lines[index:-3]
   endif
   let msg = map(stack_with_lines, {_, s -> a:prefix . s})
   call s:log('fail', msg)
