@@ -26,6 +26,14 @@ function! testify#clear() abort
   call testify#logger#clear()
 endfunction
 
+function! testify#setup(func) abort
+  let s:setup = a:func
+endfunction
+
+function! testify#teardown(func) abort
+  let s:teardown = a:func
+endfunction
+
 function! s:run_test(test) abort
   try
     let result = a:test.func()
@@ -48,13 +56,25 @@ function! s:run_report() abort
 endfunction
 
 function! testify#run(index) abort
+  if type(s:setup) == v:t_func && !empty(s:setup)
+    call s:setup()
+  endif
   call s:run_test(s:testifies[a:index])
+  if type(s:teardown) == v:t_func && !empty(s:teardown)
+    call s:teardown()
+  endif
   call s:run_report()
 endfunction
 
 function! testify#run_all() abort
+  if type(s:setup) == v:t_func && !empty(s:setup)
+    call s:setup()
+  endif
   for test in s:testifies
     call s:run_test(test)
   endfor
+  if type(s:teardown) == v:t_func && !empty(s:teardown)
+    call s:teardown()
+  endif
   call s:run_report()
 endfunction
