@@ -3,7 +3,21 @@ let g:testify#logger#type = 'buffer'
 let s:logs = []
 
 function! s:log(type, msg) abort
-  call add(s:logs, {'type': a:type, 'msg': a:msg})
+  let l:prefix = ''
+  if a:type ==# 'info'
+    let l:prefix = '*'
+  elseif a:type ==# 'success'
+    let l:prefix = '√'
+  elseif a:type ==# 'fail'
+    let l:prefix = '✗'
+  endif
+  let l:msg = ''
+  if type(a:msg) ==# v:t_string
+    let l:msg = l:prefix . ' ' . a:msg
+  elseif type(a:msg) ==# v:t_list
+    let l:msg = map(a:msg, {_, m -> l:prefix . ' ' . m})
+  endif
+  call add(s:logs, {'type': a:type, 'msg': l:msg})
 endfunction
 
 function! s:get_clear_fn() abort
@@ -26,6 +40,10 @@ function! testify#logger#fail(msg)
   call s:log('fail', a:msg)
 endfunction
 
+function! testify#logger#log(msg)
+  call s:log('noprefix', a:msg)
+endfunction
+
 function! testify#logger#throwpoint(prefix)
   let tp = v:throwpoint
   let stack = split(tp, '\.\.')
@@ -40,7 +58,7 @@ function! testify#logger#throwpoint(prefix)
     let stack_with_lines = stack_with_lines[index:-3]
   endif
   let msg = map(stack_with_lines, {_, s -> a:prefix . s})
-  call s:log('fail', msg)
+  call s:log('noprefix', msg)
 endfunction
 
 function! testify#logger#show()

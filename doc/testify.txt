@@ -11,11 +11,13 @@ CONTENTS                                                    *testify-contents*
 
     1. Introduction ............................ |testify-introduction|
     2. Getting Started ......................... |testify-getting-started|
-    3. Assertions .............................. |testify-assertions|
-    4. Options ................................. |testify-options|
-    5. Commands ................................ |testify-commands|
-    6. Contributing ............................ |testify-contributing|
-    7. Report Issues ........................... |testify-report-issues|
+    3. API ..................................... |testify-api|
+    4. Assertions .............................. |testify-assertions|
+    5. Logging ................................. |testify-logging|
+    6. Options ................................. |testify-options|
+    7. Commands ................................ |testify-commands|
+    8. Contributing ............................ |testify-contributing|
+    9. Report Issues ........................... |testify-report-issues|
 
 ==============================================================================
 INTRODUCTION                                            *testify-introduction*
@@ -73,7 +75,59 @@ GETTING STARTED                                      *testify-getting-started*
         * Tests=1
         * Fails=1
         * Result: FAIL
+
+==============================================================================
+API                                                              *testify-api*
 <
+                                                                  *testify#it*
+testify#it(msg, func)
+    Define a test case with a message description and associated function that
+    tests it
+
+                                                               *testify#clear*
+testify#clear()
+    Clears the test report
+
+                                                                 *testify#run*
+testify#run(index)
+    Runs an individual test by index
+
+                                                             *testify#run_all*
+testify#run_all()
+    Runs all the tests and shows the report
+
+                                                               *testify#setup*
+testify#setup(func)
+    Define a setup function that runs once before tests are run
+
+                                                            *testify#teardown*
+testify#teardown(func)
+    Define a teardown function that runs once after tests are run
+
+==============================================================================
+LOGGING                                                      *testify-logging*
+
+                                                         *testify#logger#type*
+testify#logger#type
+    Defines logging method to be used. Can be `echo`, `shell` or `buffer`.
+    Defaults to `buffer`
+
+                                                         *testify#logger#info*
+testify#logger#info(msg)
+    Logs an info message prefixed with a `*`
+
+                                                      *testify#logger#success*
+testify#logger#success(msg)
+    Logs a success message prefixed with a `√`
+
+                                                         *testify#logger#fail*
+testify#logger#fail(msg)
+    Logs a failure message prefixed with a `✗`
+
+                                                          *testify#logger#log*
+testify#logger#fail(msg)
+    Logs a message without any prefix
+
 ==============================================================================
 ASSERTIONS                                                *testify-assertions*
 

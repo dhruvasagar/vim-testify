@@ -3,16 +3,16 @@ function! s:log_summary() abort
   let testsrun = len(rantests)
   let fails = len(filter(copy(rantests), {_, t -> t.success == 0}))
   let msgs = []
-  call add(msgs, '* Test Summary')
-  call add(msgs, '* ------------')
+  call add(msgs, 'Test Summary')
+  call add(msgs, '------------')
   if fails == 0
-    call add(msgs, '* All tests successful')
+    call add(msgs, 'All tests successful')
   endif
-  call add(msgs, printf('* Tests=%d', testsrun))
+  call add(msgs, printf('Tests=%d', testsrun))
   if fails > 0
-    call add(msgs, printf('* Fails=%d', fails))
+    call add(msgs, printf('Fails=%d', fails))
   endif
-  call add(msgs, printf('* Result: %s', fails == 0 ? 'PASS' : 'FAIL'))
+  call add(msgs, printf('Result: %s', fails == 0 ? 'PASS' : 'FAIL'))
   call testify#logger#info(msgs)
 endfunction
 
@@ -37,14 +37,14 @@ endfunction
 function! s:run_test(test) abort
   try
     let result = a:test.func()
-    call testify#logger#success('√ ' . a:test.msg)
+    call testify#logger#success(a:test.msg)
     let a:test.success = 1
   catch
     let g:testify_fail = 1
     let a:test.success = 0
-    call testify#logger#fail('✗ ' . a:test.msg)
-    call testify#logger#fail("\t" . v:exception)
-    call testify#logger#throwpoint("\t\t")
+    call testify#logger#fail(a:test.msg)
+    call testify#logger#log("  " . v:exception)
+    call testify#logger#throwpoint("    ")
   finally
     let a:test.ran = 1
   endtry
