@@ -10,13 +10,13 @@ function! testify#assert#assert(cond) abort
 endfunction
 
 function! testify#assert#equals(actual, expected) abort
-  let cond = a:actual ==# a:expected
+  let cond = type(a:actual) ==# type(a:expected) && a:actual ==# a:expected
   call s:assert(cond,
         \ printf('Expected "%s" to equal "%s"', a:actual, a:expected))
 endfunction
 
 function! testify#assert#not_equals(actual, expected) abort
-  let cond = a:actual !=# a:expected
+  let cond = type(a:actual) ==# type(a:expected) && a:actual !=# a:expected
   call s:assert(cond,
         \ printf('Expected "%s" to not equal "%s"', a:actual, a:expected))
 endfunction
