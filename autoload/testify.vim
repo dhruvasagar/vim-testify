@@ -67,13 +67,13 @@ function! testify#run(index) abort
 endfunction
 
 function! testify#run_all() abort
-  if type(s:setup) == v:t_func && !empty(s:setup)
+  if exists('s:setup') && type(s:setup) == v:t_func && !empty(s:setup)
     call s:setup()
   endif
   for test in s:testifies
     call s:run_test(test)
   endfor
-  if type(s:teardown) == v:t_func && !empty(s:teardown)
+  if exists('s:setup') && type(s:teardown) == v:t_func && !empty(s:teardown)
     call s:teardown()
   endif
   call s:run_report()
