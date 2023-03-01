@@ -9,5 +9,5 @@ hi def link TestifyInfo Normal
 syn region TestifySuccess start=/^\s*√.*/ end=/^\ze\s*[√✗\*].*/
 hi def link TestifySuccess Special
 
-syn region TestifyFailure start=/^\s*✗.*/ end=/^\ze\s*[√✗\*].*/
+syn region TestifyFailure start=/^\s*✗.*/ end=/^\ze\(^$\)\|\(\s*[√✗\*].*\)/
 hi def link TestifyFailure Error

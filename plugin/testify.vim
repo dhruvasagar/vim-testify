@@ -28,8 +28,9 @@ function! s:TestifyNearest() abort
 
   let g:testify_fail = 0
   call testify#clear()
-  exec 'source' expand('%')
-  call testify#run(index - 1)
+  let ctx = expand('%:p')
+  exec 'source' ctx
+  call testify#run(ctx, index - 1)
 endfunction
 
 command! TestifyFile call s:Testify('source ' . expand('%'))

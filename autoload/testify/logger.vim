@@ -12,10 +12,12 @@ function! s:log(type, msg) abort
     let l:prefix = '✗'
   endif
   let l:msg = ''
-  if type(a:msg) ==# v:t_string
-    let l:msg = l:prefix . ' ' . a:msg
-  elseif type(a:msg) ==# v:t_list
-    let l:msg = map(a:msg, {_, m -> l:prefix . ' ' . m})
+  if !empty(a:msg)
+    if type(a:msg) ==# v:t_string
+      let l:msg = l:prefix . ' ' . a:msg
+    elseif type(a:msg) ==# v:t_list
+      let l:msg = map(a:msg, {_, m -> l:prefix . ' ' . m})
+    endif
   endif
   call add(s:logs, {'type': a:type, 'msg': l:msg})
 endfunction
@@ -63,7 +65,7 @@ endfunction
 
 function! testify#logger#show()
   if has('vim_starting')
-    let g:testify#logger#type = 'shell'
+    let g:testify#logger#type = 'echo'
   endif
 
   let CleanFn = s:get_clear_fn()

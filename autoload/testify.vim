@@ -1,5 +1,6 @@
 function! s:log_summary() abort
-  let rantests = filter(copy(s:testifies), {_, t -> has_key(t, 'ran')})
+  let tests = flatten(map(values(s:testifies), {_, t -> t.tests}))
+  let rantests = filter(tests, {_, t -> has_key(t, 'ran')})
   let testsrun = len(rantests)
   let fails = len(filter(copy(rantests), {_, t -> t.success == 0}))
   let msgs = []
@@ -16,22 +17,39 @@ function! s:log_summary() abort
   call testify#logger#info(msgs)
 endfunction
 
-let s:testifies = []
+function! s:get_context() abort
+  let stack = expand('<sfile>')
+  let stack_lines = split(stack, '\.\.')
+  let b:stack = stack_lines
+  let ctx = substitute(stack_lines[len(stack_lines)-3], 'script \(.\{-}\)\[\d\+\]', '\1', '')
+  if !has_key(s:testifies, ctx)
+    let s:testifies[ctx] = {'tests': []}
+  endif
+  return ctx
+endfunction
+
+let s:testifies = {}
 function! testify#it(msg, func) abort
-  call add(s:testifies, {'msg': a:msg, 'func': a:func})
+  let ctx = s:get_context()
+  " echom ctx
+  call add(s:testifies[ctx].tests, {'msg': a:msg, 'func': a:func})
 endfunction
 
 function! testify#clear() abort
-  let s:testifies = []
+  let s:testifies = {}
   call testify#logger#clear()
 endfunction
 
 function! testify#setup(func) abort
-  let s:setup = a:func
+  let ctx = s:get_context()
+  " echom ctx
+  let s:testifies[ctx].setup = a:func
 endfunction
 
 function! testify#teardown(func) abort
-  let s:teardown = a:func
+  let ctx = s:get_context()
+  " echom ctx
+  let s:testifies[ctx].teardown = a:func
 endfunction
 
 function! s:run_test(test) abort
@@ -55,26 +73,37 @@ function! s:run_report() abort
   call testify#logger#show()
 endfunction
 
-function! testify#run(index) abort
-  if type(s:setup) == v:t_func && !empty(s:setup)
-    call s:setup()
+function! testify#run(ctx, index) abort
+  if has_key(s:testifies[a:ctx], 'setup')
+    call s:testifies[a:ctx].setup()
   endif
-  call s:run_test(s:testifies[a:index])
-  if type(s:teardown) == v:t_func && !empty(s:teardown)
-    call s:teardown()
+  call s:run_test(s:testifies[a:ctx].tests[a:index])
+  call testify#logger#log('')
+  if has_key(s:testifies[a:ctx], 'teardown')
+    call s:testifies[a:ctx].teardown()
   endif
   call s:run_report()
 endfunction
 
 function! testify#run_all() abort
-  if exists('s:setup') && type(s:setup) == v:t_func && !empty(s:setup)
-    call s:setup()
-  endif
-  for test in s:testifies
-    call s:run_test(test)
+  for [ctx, filetest] in items(s:testifies)
+    if has_key(s:testifies[ctx], 'setup')
+      call s:testifies[ctx].setup()
+    endif
+
+    call testify#logger#info(fnamemodify(ctx, ':.'))
+    for test in filetest.tests
+      call s:run_test(test)
+    endfor
+    call testify#logger#log('')
+
+    if has_key(s:testifies[ctx], 'teardown')
+      call s:testifies[ctx].teardown()
+    endif
   endfor
-  if exists('s:setup') && type(s:teardown) == v:t_func && !empty(s:teardown)
-    call s:teardown()
-  endif
   call s:run_report()
+endfunction
+
+function! testify#inspect()
+  return s:testifies
 endfunction

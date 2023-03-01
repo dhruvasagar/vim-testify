@@ -1,7 +1,7 @@
 *testify.txt* *testify*       Unit Testing for Vim Script
 ==============================================================================
               Testify, a pure vim script unit testing framework.
-                                Version 0.3.0
+                                Version 0.4.0
 
                 Author: Dhruva Sagar (https://dhruvasagar.com)
               LICENSE: MIT (http://opensource.org/licenses/mit)
@@ -89,8 +89,8 @@ testify#clear()
     Clears the test report
 
                                                                  *testify#run*
-testify#run(index)
-    Runs an individual test by index
+testify#run(file, index)
+    Runs an individual test within a test file by index
 
                                                              *testify#run_all*
 testify#run_all()
@@ -98,11 +98,13 @@ testify#run_all()
 
                                                                *testify#setup*
 testify#setup(func)
-    Define a setup function that runs once before tests are run
+    Define a setup function that runs once before tests are run for the test
+    file
 
                                                             *testify#teardown*
 testify#teardown(func)
-    Define a teardown function that runs once after tests are run
+    Define a teardown function that runs once after tests are run for the test
+    file
 
 ==============================================================================
 LOGGING                                                      *testify-logging*

@@ -3,11 +3,11 @@ function! testify#logger#echo#clear() abort
 endfunction
 
 function! testify#logger#echo#log(log) abort
-  if log.type ==# 'success'
-    echohl Special | echo a:msg | echohl None
-  elseif log.type ==# 'fail'
-    echohl Error | echo a:msg | echohl None
-  elseif log.type ==# 'info'
-    echohl Normal | echo a:msg | echohl None
+  if a:log.type ==# 'success'
+    silent! echohl Special | echo a:log.msg | echohl None
+  elseif a:log.type ==# 'fail'
+    silent! echohl Error | echo a:log.msg | echohl None
+  elseif a:log.type ==# 'info'
+    silent! echohl Normal | echo a:log.msg | echohl None
   endif
 endfunction
