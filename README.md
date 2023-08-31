@@ -80,18 +80,18 @@ by setting option `g:testify#logger#type`.
 
 - `echo` : Uses vim's echo and outputs the tests log on the standard vim
   command line.
-- `shell` : Uses `!echo` to output the logs to the shell, this is default
-  when invoked during vim startup using `vim +TestifySuite` and
-  is useful for working with a continuous integration setup.
-
-            NOTE: When this is invoked during vim startup, testify exits vim
-            after running the tests with an appropriate exit code based on
-            whether the tests passed or not. This is used by continous
-            integration applications to judge whether or not the tests were
-            successful.
-
-- `buffer`: Uses a preview buffer to show the test logs. This is the default
+- `shell` : Uses `!echo` to output the logs to the shell
+- `buffer` : Uses a preview buffer to show the test logs. This is the default
   when using Testify from within VIM.
+- `file` : Writes the test logs to `testify_results.txt` file. This is set as
+  the default when tests are invoked during vim startup using something
+  like `vim +TestifySuite` and is useful for integration with a continous
+  integration platform.
+
+  > NOTE: For compatibility with continous integration platforms,
+  > when executed during vim startup as described above, |testify|
+  > exits vim after running the tests with an appropriate exit code
+  > based on whether the tests passed or not.
 
 ## Installation
 
