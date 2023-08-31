@@ -1,7 +1,7 @@
 *testify.txt* *testify*       Unit Testing for Vim Script
 ==============================================================================
               Testify, a pure vim script unit testing framework.
-                                Version 0.4.0
+                                Version 0.5.0
 
                 Author: Dhruva Sagar (https://dhruvasagar.com)
               LICENSE: MIT (http://opensource.org/licenses/mit)
@@ -111,8 +111,8 @@ LOGGING                                                      *testify-logging*
 
                                                          *testify#logger#type*
 testify#logger#type
-    Defines logging method to be used. Can be `echo`, `shell` or `buffer`.
-    Defaults to `buffer`
+    Defines logging method to be used. Can be `echo`, `shell`, `buffer` or
+    `file`. Defaults to `buffer`
 
                                                          *testify#logger#info*
 testify#logger#info(msg)
@@ -184,17 +184,18 @@ testify#logger#type
 
     * `echo  ` : Uses vim's echo and outputs the tests execution logs on the
                standard vim command line
-    * `shell`  : Uses `!echo` to output the test execution logs to the shell,
-               this is set as the default when tests are invoked during vim
-               startup using something like `vim +TestifySuite` and is useful
-               for integration with a continous integration platform.
+    * `shell`  : Uses `!echo` to output the test execution logs to the shell
+    * `buffer` : Uses a preview buffer to show the test logs. This is the
+               default.
+    * `file`   : Writes the test logs to `testify_results.txt` file. This is 
+               set as the default when tests are invoked during vim startup
+               using something like `vim +TestifySuite` and is useful for
+               integration with a continous integration platform.
 
                NOTE: For compatibility with continous integration platforms,
                when executed during vim startup as described above, |testify|
                exits vim after running the tests with an appropriate exit code
                based on whether the tests passed or not.
-    * `buffer` : Uses a preview buffer to show the test logs. This is the
-               default.
 
 ==============================================================================
 COMMANDS                                                    *testify-commands*

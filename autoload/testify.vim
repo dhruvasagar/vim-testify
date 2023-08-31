@@ -91,7 +91,7 @@ function! testify#run_all() abort
       call s:testifies[ctx].setup()
     endif
 
-    call testify#logger#info(fnamemodify(ctx, ':.'))
+    call testify#logger#info(fnamemodify(ctx, ':~:.'))
     for test in filetest.tests
       call s:run_test(test)
     endfor

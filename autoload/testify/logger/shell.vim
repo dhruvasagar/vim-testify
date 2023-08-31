@@ -3,11 +3,15 @@ function! testify#logger#shell#clear() abort
 endfunction
 
 function! testify#logger#shell#log(log) abort
-  if a:log.type ==# 'success'
-    silent! exec '!echo' a:log.msg
-  elseif a:log.type ==# 'fail'
-    silent! exec '!echo' a:log.msg
-  elseif a:log.type ==# 'info'
-    silent! exec '!echo' a:log.msg
+  if a:log.type ==# 'fail'
+    silent! exec '!>&2 echo' a:log.msg
+  else
+    if type(a:log.msg) ==# v:t_list
+      for msg in a:log.msg
+        silent! exec '!echo' msg
+      endfor
+    else
+      silent! exec '!echo' a:log.msg
+    endif
   endif
 endfunction

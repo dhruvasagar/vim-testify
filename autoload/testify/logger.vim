@@ -65,7 +65,7 @@ endfunction
 
 function! testify#logger#show()
   if has('vim_starting')
-    let g:testify#logger#type = 'shell'
+    let g:testify#logger#type = 'file'
   endif
 
   let CleanFn = s:get_clear_fn()
