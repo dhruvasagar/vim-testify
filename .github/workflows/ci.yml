@@ -15,9 +15,8 @@ concurrency:
 jobs:
   tests:
     name: Testify Tests
-    continue-on-error: true
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         neovim: [false, true]
@@ -38,7 +37,5 @@ jobs:
         env:
           VIM: ${{ steps.vim.outputs.executable }}
         run: |
-          cd ${{ github.workspace }}/pack/plugins/start/vim-testify
-          echo "set packpath+=${{ github.workspace }}" > vimrc
-          ${VIM} -u vimrc +TestifySuite +qall
+          ${VIM} +TestifySuite +qall
           cat testify_results.txt
