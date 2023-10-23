@@ -37,6 +37,5 @@ jobs:
         env:
           VIM: ${{ steps.vim.outputs.executable }}
         run: |
-          cd ${{ github.workspace }}/pack/plugins/start/vim-testify
-          ${VIM} +TestifySuite +qall
+          ${VIM} +TestifySuite +qall;
           cat testify_results.txt
