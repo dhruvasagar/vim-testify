@@ -1,6 +1,5 @@
 function! s:TestEqualsSuccess() abort
-  call testify#assert#not_raise_exception(
-        \ function('testify#assert#equals', [1, 1]))
+  call testify#assert#not_raise_exception(function('testify#assert#equals', [1, 1]))
 endfunction
 call testify#it('assert equals should succeed when arguments are equal', function('s:TestEqualsSuccess'))
 
