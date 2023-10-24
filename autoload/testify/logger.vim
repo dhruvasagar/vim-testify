@@ -68,7 +68,7 @@ function! testify#logger#show()
     if has('nvim')
       let g:testify#logger#type = 'echo'
     else
-      let g:testify#logger#type = 'shell'
+      let g:testify#logger#type = 'file'
     endif
   endif
 
