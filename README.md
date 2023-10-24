@@ -1,4 +1,4 @@
-# VIM Testify v0.5.0 [![CircleCI](https://circleci.com/gh/dhruvasagar/vim-testify.svg?style=svg)](https://circleci.com/gh/dhruvasagar/vim-testify)
+# VIM Testify v0.5.0 ![Build](https://github.com/OWNER/REPOSITORY/actions/workflows/WORKFLOW-FILE/badge.svg)
 
 A very basic unit testing framework for viml
 
