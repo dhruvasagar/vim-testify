@@ -19,6 +19,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest, macos-latest]
+        neovim: [true, false]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -29,13 +30,23 @@ jobs:
         uses: rhysd/action-setup-vim@v1
         id: vim
         with:
-          neovim: true
+          neovim: ${{ matrix.neovim }}
           version: nightly
 
-      - name: Run unit tests
+      - name: Run unit tests on nvim
+        if: ${{ matrix.neovim }}
         env:
           VIM: ${{ steps.vim.outputs.executable }}
         run: |
           cd ${{ github.workspace }}/pack/plugins/start/vim-testify
           echo "set packpath+=${{ github.workspace }}" > vimrc
           ${VIM} --headless -u vimrc +TestifySuite +qall
+
+      - name: Run unit tests on vim
+        if: ${{ !matrix.neovim }}
+        env:
+          VIM: ${{ steps.vim.outputs.executable }}
+        run: |
+          cd ${{ github.workspace }}/pack/plugins/start/vim-testify
+          echo "set packpath+=${{ github.workspace }}" > vimrc
+          ${VIM} -u vimrc +TestifySuite +qall

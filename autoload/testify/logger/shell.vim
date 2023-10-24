@@ -8,7 +8,7 @@ function! testify#logger#shell#log(log) abort
   else
     if type(a:log.msg) ==# v:t_list
       for msg in a:log.msg
-        silent! exec '!echo' msg
+        call testify#logger#shell#log({ 'type': a:log.type, 'msg': msg })
       endfor
     else
       silent! exec '!echo' a:log.msg
