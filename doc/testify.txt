@@ -1,7 +1,7 @@
 *testify.txt* *testify*       Unit Testing for Vim Script
 ==============================================================================
               Testify, a pure vim script unit testing framework.
-                                Version 0.5.0
+                                Version 0.6.0
 
                 Author: Dhruva Sagar (https://dhruvasagar.com)
               LICENSE: MIT (http://opensource.org/licenses/mit)
